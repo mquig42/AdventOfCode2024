@@ -36,6 +36,7 @@ void setup()
 	list1.pop_back();
 	list2.pop_back();
 
+	//Part 1
 	std::sort(list1.begin(), list1.end());
 	std::sort(list2.begin(), list2.end());
 
@@ -48,12 +49,35 @@ void setup()
 	sprintf(s, "Part 1: %d", sum);
 	M5Cardputer.Display.drawString(s, 0, 20);
 
-	/*char s[25];
+	//Part 2
+	long prev_val = -1;
+	long similarity = 0;
+	int j = 0;
+	int count = 0;
+	sum = 0;
+
 	for(int i = 0; i < list1.size(); i++)
 	{
-		sprintf(s, "%d", list2[i]);
-		M5Cardputer.Display.drawString(s, i * 10, 20);
-	}*/
+		if(list1[i] == prev_val)
+			sum += similarity;
+		else
+		{
+			count = 0;
+			while(list2[j] < list1[i])
+				j++;
+			while(list2[j] == list1[i])
+			{
+				count++;
+				j++;
+			}
+			similarity = list1[i] * count;
+			sum += similarity;
+			prev_val = list1[i];
+		}
+	}
+
+	sprintf(s, "Part 2: %d", sum);
+	M5Cardputer.Display.drawString(s, 0, 30);
 }
 
 void loop()
