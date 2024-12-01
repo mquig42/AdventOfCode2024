@@ -19,9 +19,41 @@ void setup()
 	SPI.begin(SD_SPI_SCK_PIN, SD_SPI_MISO_PIN, SD_SPI_MOSI_PIN, SD_SPI_CS_PIN);
 	SD.begin(SD_SPI_CS_PIN, SPI, 25000000);
 
-	File file = SD.open("/AoC_Data/1_Test.txt");
-	M5Cardputer.Display.drawString(file.readStringUntil('\n'), 0, 20);
+	std::vector<long> list1;
+	std::vector<long> list2;
+	long sum = 0;
+
+	File file = SD.open("/AoC_Data/1.txt");
+	while(file.available())
+	{
+		list1.push_back(file.parseInt());
+		list2.push_back(file.parseInt());
+	}
 	file.close();
+
+	//This method of reading files adds a 0 to the end of each list
+	//Maybe that's how it interprets EOF. Anyway, remove it
+	list1.pop_back();
+	list2.pop_back();
+
+	std::sort(list1.begin(), list1.end());
+	std::sort(list2.begin(), list2.end());
+
+	for(int i = 0; i < list1.size(); i++)
+	{
+		sum += std::abs(list1[i] - list2[i]);
+	}
+
+	char s[255];
+	sprintf(s, "Part 1: %d", sum);
+	M5Cardputer.Display.drawString(s, 0, 20);
+
+	/*char s[25];
+	for(int i = 0; i < list1.size(); i++)
+	{
+		sprintf(s, "%d", list2[i]);
+		M5Cardputer.Display.drawString(s, i * 10, 20);
+	}*/
 }
 
 void loop()
