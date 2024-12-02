@@ -5,6 +5,7 @@
 
 #include "day.h"
 #include "day01.h"
+#include "day02.h"
 
 //Pins for SD card
 #define SD_SPI_SCK_PIN  40
@@ -21,9 +22,9 @@ void setup()
 	SPI.begin(SD_SPI_SCK_PIN, SD_SPI_MISO_PIN, SD_SPI_MOSI_PIN, SD_SPI_CS_PIN);
 	SD.begin(SD_SPI_CS_PIN, SPI, 25000000);
 
-	Day01 day;
+	Day02 day;
 
-	day.load(SD.open("/AoC_Data/1.txt"));
+	day.load(SD.open("/AoC_Data/02.txt"));
 	day.solveBoth(&M5Cardputer.Display);
 }
 
