@@ -29,7 +29,15 @@ long Day02::solve1()
 
 long Day02::solve2()
 {
-    return 0;
+    long safeCount = 0;
+
+    for(int i = 0; i < reports.size(); i++)
+    {
+        if(isSafe2(reports[i]))
+            safeCount++;
+    }
+
+    return safeCount;
 }
 
 std::vector<int> Day02::parseLine(String line)
@@ -71,4 +79,28 @@ bool Day02::isSafe(std::vector<int> report)
     }
 
     return true;
+}
+
+bool Day02::isSafe2(std::vector<int> report)
+{
+    if(report.size() < 2)
+        return false;
+    
+    if(isSafe(report))
+        return true;
+    
+    //Simple brute force approach. Make a bunch of copies, each with a different element removed, and test all of them
+    for(int i = 0; i < report.size(); i++)
+    {
+        std::vector<int> reportCopy;
+        for(int j = 0; j < report.size(); j++)
+        {
+            if(j != i)
+                reportCopy.push_back(report[j]);
+        }
+        if(isSafe(reportCopy))
+            return true;
+    }
+
+    return false;
 }

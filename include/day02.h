@@ -13,6 +13,7 @@ class Day02 : public Day
         long solve2();
         std::vector<int> parseLine(String line);
         bool isSafe(std::vector<int> report);
+        bool isSafe2(std::vector<int> report);
 };
 
 #endif //DAY01_H
