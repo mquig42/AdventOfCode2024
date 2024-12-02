@@ -12,6 +12,7 @@ void Day02::load(File file)
     {
         reports.push_back(parseLine(file.readStringUntil('\n')));
     }
+    file.close();
 }
 
 long Day02::solve1()
