@@ -27,7 +27,7 @@ void setup()
 
 	Day &day = selectDay(25); 
 
-	day.load(SD.open("/AoC_Data/02.txt"));
+	day.load(SD.open("/AoC_Data/03.txt"));
 	day.solveBoth(&M5Cardputer.Display);
 }
 
