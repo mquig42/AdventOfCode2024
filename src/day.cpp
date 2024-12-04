@@ -2,13 +2,10 @@
 
 void Day::solveBoth(LovyanGFX* display)
 {
-    char s[255];
-    sprintf(s, "Advent of Code 2024 Day %d", dayNumber);
-    display->drawString(s, 0, 10);
+    display->setTextColor(GREEN);
+    display->setTextFont(2);
 
-	sprintf(s, "Part 1: %d", solve1());
-	display->drawString(s, 0, 20);
-
-    sprintf(s, "Part 2: %d", solve2());
-	display->drawString(s, 0, 30);
+    display->printf("Advent of Code 2024 Day %d\n", dayNumber);
+	display->printf("Part 1: %d\n", solve1());
+    display->printf("Part 2: %d\n", solve2());
 }
