@@ -40,7 +40,6 @@ void Day05::load(File file)
                 pos++;
             }
         }
-        pageList[page] = pos;
         pageLists.push_back(std::map<uint8_t, uint8_t>(pageList));
         pageList.clear();
     }
@@ -114,7 +113,7 @@ uint8_t Day05::fix(std::map<uint8_t, uint8_t> pageList)
 //Returns the middle page of a list
 uint8_t Day05::middle(std::map<uint8_t, uint8_t> pageList)
 {
-    uint8_t middlePos = pageList.size() / 2 - 1;
+    uint8_t middlePos = pageList.size() / 2;
 
     for(auto page : pageList)
     {
