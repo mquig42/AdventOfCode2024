@@ -29,6 +29,7 @@ class Day06 : public Day
         uint8_t numRows, numCols;
         uint16_t guardStart;
         std::unordered_set<uint16_t> obstacles;
+        std::vector<uint16_t> visitedVec;
 
         long solve1();
         long solve2();

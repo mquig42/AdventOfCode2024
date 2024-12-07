@@ -47,39 +47,34 @@ long Day06::solve1()
         visited.insert(newPos);
         guardPos = newPos;
     }
-
-    //Subtract 1 because the loop doesn't end until after an out-of-bounds location has been visited
-    return visited.size() - 1;
+    //We need a record of the guard's path for part 2, not including the starting point or (out of bounds) final point
+    //Copy to a vector because an unordered_set uses too much memory
+    visited.erase(guardStart);
+    visited.erase(guardPos);
+    for(uint16_t v : visited)
+        visitedVec.push_back(v);
+    
+    //Add 1 because we removed the starting point
+    return visited.size() + 1;
 }
 
-//To solve this, need to implement loop detection and try adding an obstacle to every empty space
-//Loop detection is simple, need to store a set of all visited states (position and direction)
-//which means I can't just store a bunch of uint16_ts, I need to actually put my own struct in a set
-//Seems similar to something from last year. Day 16: The Floor Will Be Lava
+//Solution 1: the loops() function simulates the guard's movement and uses an unordered_set of previously visited states to detect loops
+//Try loops() after adding an obstacle to each empty space. Runtime 15 minutes 27 seconds
+//Solution 2: If a space isn't part of the guard's original route, then adding an obstacle to it won't change anything, right?
+//Only test those spaces instead of every empty one. Runtime 3 minutes 7 seconds
+//Solution 3: change loops() to only store a set of previously visited turning points, instead of the entire path. Runtime 9 seconds
 long Day06::solve2()
 {
     long count = 0;
-    uint16_t pos;
 
-    for(uint8_t r = 0; r < numRows; r++)
+    for(uint16_t v : visitedVec)
     {
-        M5Cardputer.Display.clear();
-        M5Cardputer.Display.setCursor(0, 48);
-        M5Cardputer.Display.printf("%d", r);
-        for(uint8_t c = 0; c < numCols; c++)
-        {
-            pos = makeCoord(r, c);
-            if(pos != guardStart && !obstacles.count(pos))
-            {
-                obstacles.insert(pos);
-                if(loops())
-                    count++;
-                obstacles.erase(pos);
-            }
-        }
+        obstacles.insert(v);
+        if(loops())
+            count++;
+        obstacles.erase(v);
     }
 
-    M5Cardputer.Display.setCursor(0, 32);
     return count;
 }
 
@@ -102,24 +97,23 @@ uint8_t Day06::col(uint16_t coord)
 bool Day06::loops()
 {
 
-    std::unordered_set<state, state> visited;
+    std::unordered_set<state, state> visitedStates;
     uint8_t direction = 0;
     uint16_t guardPos = guardStart;
     uint16_t newPos;
 
-    visited.insert({guardPos, direction});
+    visitedStates.insert({guardPos, direction});
     while(row(guardPos) < numRows && col(guardPos) < numCols)
     {
         newPos = makeCoord(row(guardPos) + directions[direction][0], col(guardPos) + directions[direction][1]);
         while(obstacles.count(newPos))
         {
+            if(visitedStates.count({newPos, direction}))
+                return true;
+            visitedStates.insert({newPos, direction});
             direction = (direction + 1) % 4;
             newPos = makeCoord(row(guardPos) + directions[direction][0], col(guardPos) + directions[direction][1]);
         }
-        if(visited.count({newPos, direction}))
-            return true;
-
-        visited.insert({newPos, direction});
         guardPos = newPos;
     }
     return false;
