@@ -47,7 +47,7 @@ void Day05::load(File file)
     file.close();
 }
 
-long Day05::solve1()
+uint64_t Day05::solve1()
 {
     long sum = 0;
 
@@ -60,7 +60,7 @@ long Day05::solve1()
     return sum;
 }
 
-long Day05::solve2()
+uint64_t Day05::solve2()
 {
     long sum = 0;
 

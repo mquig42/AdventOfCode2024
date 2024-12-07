@@ -10,8 +10,8 @@ class Day01 : public Day
     private:
         std::vector<long> list1;
 	    std::vector<long> list2;
-        virtual long solve1();
-        virtual long solve2();
+        uint64_t solve1();
+        uint64_t solve2();
 };
 
 #endif //DAY01_H

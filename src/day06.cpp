@@ -28,7 +28,7 @@ void Day06::load(File file)
     file.close();
 }
 
-long Day06::solve1()
+uint64_t Day06::solve1()
 {
     std::unordered_set<uint16_t> visited;
     uint8_t direction = 0;
@@ -63,7 +63,7 @@ long Day06::solve1()
 //Solution 2: If a space isn't part of the guard's original route, then adding an obstacle to it won't change anything, right?
 //Only test those spaces instead of every empty one. Runtime 3 minutes 7 seconds
 //Solution 3: change loops() to only store a set of previously visited turning points, instead of the entire path. Runtime 9 seconds
-long Day06::solve2()
+uint64_t Day06::solve2()
 {
     long count = 0;
 

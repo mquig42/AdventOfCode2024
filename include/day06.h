@@ -31,8 +31,8 @@ class Day06 : public Day
         std::unordered_set<uint16_t> obstacles;
         std::vector<uint16_t> visitedVec;
 
-        long solve1();
-        long solve2();
+        uint64_t solve1();
+        uint64_t solve2();
         uint16_t makeCoord(uint8_t row, uint8_t col);
         uint8_t row(uint16_t coord);
         uint8_t col(uint16_t coord);

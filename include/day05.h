@@ -18,8 +18,8 @@ class Day05 : public Day
         std::vector<rule> rules;
         std::vector<std::map<uint8_t, uint8_t>> pageLists; //key: page number, value: position
 
-        long solve1();
-        long solve2();
+        uint64_t solve1();
+        uint64_t solve2();
         bool valid(std::map<uint8_t, uint8_t> pageList);
         uint8_t fix(std::map<uint8_t, uint8_t> pageList);
         uint8_t middle(std::map<uint8_t, uint8_t> pageList);

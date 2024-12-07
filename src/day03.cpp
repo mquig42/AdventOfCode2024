@@ -11,7 +11,7 @@ void Day03::load(File file)
     file.close();
 }
 
-long Day03::solve1()
+uint64_t Day03::solve1()
 {
     char oper[4]; //Enough space for a 3 digit number plus null terminator
     int idx, op1, op2;
@@ -33,7 +33,7 @@ long Day03::solve1()
     return sum;
 }
 
-long Day03::solve2()
+uint64_t Day03::solve2()
 {
     char oper[4]; //Enough space for a 3 digit number plus null terminator
     int idx, op1, op2, mulIdx, dontIdx;

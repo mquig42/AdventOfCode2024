@@ -15,7 +15,7 @@ void Day02::load(File file)
     file.close();
 }
 
-long Day02::solve1()
+uint64_t Day02::solve1()
 {
     long safeCount = 0;
 
@@ -28,7 +28,7 @@ long Day02::solve1()
     return safeCount;
 }
 
-long Day02::solve2()
+uint64_t Day02::solve2()
 {
     long safeCount = 0;
 

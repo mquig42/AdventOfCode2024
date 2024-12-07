@@ -9,8 +9,8 @@ class Day04 : public Day
         void load(File file);
     private:
         std::vector<String> grid;
-        long solve1();
-        long solve2();
+        uint64_t solve1();
+        uint64_t solve2();
         char getChar(uint8_t row, uint8_t col);
         uint8_t isXmas(uint8_t row, uint8_t col);
         bool isXmas2(uint8_t row, uint8_t col);

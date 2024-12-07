@@ -14,7 +14,7 @@ void Day04::load(File file)
     file.close();
 }
 
-long Day04::solve1()
+uint64_t Day04::solve1()
 {
     long count = 0;
 
@@ -29,7 +29,7 @@ long Day04::solve1()
     return count;
 }
 
-long Day04::solve2()
+uint64_t Day04::solve2()
 {
     long count = 0;
 

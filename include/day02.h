@@ -9,8 +9,8 @@ class Day02 : public Day
         void load(File file);
     private:
         std::vector<std::vector<int>> reports;
-        long solve1();
-        long solve2();
+        uint64_t solve1();
+        uint64_t solve2();
         std::vector<int> parseLine(String line);
         bool isSafe(std::vector<int> report);
         bool isSafe2(std::vector<int> report);

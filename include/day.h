@@ -11,8 +11,8 @@ class Day
         virtual void load(File file) = 0;
         virtual void solveBoth(LovyanGFX* display);
     private:
-        virtual long solve1() = 0;
-        virtual long solve2() = 0;
+        virtual uint64_t solve1() = 0;
+        virtual uint64_t solve2() = 0;
 };
 
 #endif //DAY_H

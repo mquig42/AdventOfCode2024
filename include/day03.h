@@ -10,8 +10,8 @@ class Day03 : public Day
         void load(File file);
     private:
         char puzzleInput[32768]; //32kB
-        long solve1();
-        long solve2();
+        uint64_t solve1();
+        uint64_t solve2();
 };
 
 #endif //DAY03_H

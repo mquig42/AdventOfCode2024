@@ -19,7 +19,7 @@ void Day01::load(File file)
     list2.pop_back();
 }
 
-long Day01::solve1()
+uint64_t Day01::solve1()
 {
     long sum = 0;
 
@@ -34,7 +34,7 @@ long Day01::solve1()
     return sum;
 }
 
-long Day01::solve2()
+uint64_t Day01::solve2()
 {
     long prev_val = -1;
 	long similarity = 0;
