@@ -10,6 +10,7 @@
 #include "day04.h"
 #include "day05.h"
 #include "day06.h"
+#include "day07.h"
 
 //Pins for SD card
 #define SD_SPI_SCK_PIN  40
@@ -58,8 +59,11 @@ Day &selectDay(int n)
 		case 5:
 			static Day05 d5;
 			return d5;
-		default:
+		case 6:
 			static Day06 d6;
 			return d6;
+		default:
+			static Day07 d7;
+			return d7;
 	}
 }
