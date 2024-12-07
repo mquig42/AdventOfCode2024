@@ -1,5 +1,6 @@
 #ifndef DAY07_H
 #define DAY07_H
+#include <forward_list>
 #include "day.h"
 
 class Day07 : public Day
@@ -11,7 +12,7 @@ class Day07 : public Day
         struct equation
         {
             uint64_t value;
-            std::vector<uint16_t> operands;
+            std::forward_list<uint16_t> operands;
         };
 
         std::vector<equation> equations;
@@ -20,6 +21,7 @@ class Day07 : public Day
         uint64_t solve2();
         Day07::equation parseLine(String line);
         uint64_t calibrate1(equation eq);
+        uint8_t listSize(std::forward_list<uint16_t> lst);
 };
 
 #endif //DAY07_H

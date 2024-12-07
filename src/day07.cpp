@@ -40,7 +40,7 @@ Day07::equation Day07::parseLine(String line)
 {
     uint64_t val = 0;
     uint16_t n = 0;
-    std::vector<uint16_t> operands;
+    std::forward_list<uint16_t> operands;
     int i = 0;
 
     //First number of line is the value
@@ -58,12 +58,13 @@ Day07::equation Day07::parseLine(String line)
             n = n * 10 + line[i] - '0';
         else
         {
-            operands.push_back(n);
+            operands.push_front(n);
             n = 0;
         }
         i++;
     }
 
+    operands.reverse();
     return {val, operands};
 }
 
@@ -72,25 +73,26 @@ Day07::equation Day07::parseLine(String line)
 uint64_t Day07::calibrate1(equation eq)
 {
     uint64_t result;
-    int currentOps;
+    int currentOps; //bit mask representing operator list. 0 for +, 1 for *
 
     //2^(n-1)
+    uint8_t operandCount = listSize(eq.operands);
     int opLimit = 1;
-    for(int i = 1; i < eq.operands.size(); i++)
+    for(int i = 1; i < operandCount; i++)
     {
         opLimit *= 2;
     }
 
     for(int i = 0; i < opLimit; i++)
     {
-        result = eq.operands[0];
+        result = eq.operands.front();
         currentOps = i;
-        for(int j = 1; j < eq.operands.size(); j++)
+        for(auto it = eq.operands.begin()._M_next(); it != eq.operands.end(); it++)
         {
             if(currentOps & 1)
-                result *= eq.operands[j];
+                result *= *it;
             else
-                result += eq.operands[j];
+                result += *it;
             currentOps /= 2;
         }
         if(result == eq.value)
@@ -98,4 +100,13 @@ uint64_t Day07::calibrate1(equation eq)
     }
 
     return 0;
+}
+
+//Counts the number of elements in a list
+uint8_t Day07::listSize(std::forward_list<uint16_t> lst)
+{
+    uint8_t count = 0;
+    for(uint16_t n : lst)
+        count++;
+    return count;
 }
