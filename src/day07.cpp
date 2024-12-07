@@ -33,7 +33,15 @@ uint64_t Day07::solve1()
 //Close, it's actually just one more operator which concatenates numbers
 uint64_t Day07::solve2()
 {
-    return 0;
+    uint64_t sum = 0;
+
+    for(equation eq : equations)
+    {
+        if(calibrate2(eq.value, eq.operands.front(), eq.operands.begin()._M_next(), eq.operands.end()))
+            sum += eq.value;
+    }
+
+    return sum;
 }
 
 Day07::equation Day07::parseLine(String line)
@@ -102,11 +110,40 @@ uint64_t Day07::calibrate1(equation eq)
     return 0;
 }
 
-//Counts the number of elements in a list
+//Counts the number of elements in a list. This should be part of the std::forward_list class, but it isn't.
 uint8_t Day07::listSize(std::forward_list<uint16_t> lst)
 {
     uint8_t count = 0;
     for(uint16_t n : lst)
         count++;
     return count;
+}
+
+//The bitmask approach I used for part 1 won't work for three operators
+//I've used Racket before, so my thoughts now naturally lead to linked lists and recursion
+//though I have to use iterators here. Car and cdr are more elegant.
+bool Day07::calibrate2(uint64_t goal, uint64_t acc, std::forward_list<uint16_t>::iterator begin, std::forward_list<uint16_t>::iterator end)
+{
+    if(begin == end)
+        return acc == goal;
+    else if(calibrate2(goal, acc + *begin, begin._M_next(), end))
+        return true;
+    else if(calibrate2(goal, acc * *begin, begin._M_next(), end))
+        return true;
+    else if(calibrate2(goal, concat(acc, *begin), begin._M_next(), end))
+        return true;
+
+    return false;
+}
+
+//Concatenates two integers.
+//I'm taking advantage of the fact that the input only contains operands with 1 to 3 digits
+uint64_t Day07::concat(uint64_t a, uint16_t b)
+{
+    if(b < 10)
+        return a * 10 + b;
+    else if(b < 100)
+        return a * 100 + b;
+    else
+        return a * 1000 + b;
 }

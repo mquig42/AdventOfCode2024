@@ -22,6 +22,8 @@ class Day07 : public Day
         Day07::equation parseLine(String line);
         uint64_t calibrate1(equation eq);
         uint8_t listSize(std::forward_list<uint16_t> lst);
+        bool calibrate2(uint64_t goal, uint64_t acc, std::forward_list<uint16_t>::iterator begin, std::forward_list<uint16_t>::iterator end);
+        uint64_t concat(uint64_t a, uint16_t b);
 };
 
 #endif //DAY07_H
