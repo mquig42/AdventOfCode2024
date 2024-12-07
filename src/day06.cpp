@@ -28,16 +28,14 @@ void Day06::load(File file)
     file.close();
 }
 
-//This finds the correct answer for the sample input, but is off by one for the real input
-//I'm not including the starting position, that may have something to do with it
-//Why the discrepancy between inputs though?
 long Day06::solve1()
 {
-    int8_t directions[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    std::unordered_set<uint16_t> visited;
     uint8_t direction = 0;
     uint16_t guardPos = guardStart;
     uint16_t newPos;
 
+    visited.insert(guardPos);
     while(row(guardPos) < numRows && col(guardPos) < numCols)
     {
         newPos = makeCoord(row(guardPos) + directions[direction][0], col(guardPos) + directions[direction][1]);
@@ -54,9 +52,35 @@ long Day06::solve1()
     return visited.size() - 1;
 }
 
+//To solve this, need to implement loop detection and try adding an obstacle to every empty space
+//Loop detection is simple, need to store a set of all visited states (position and direction)
+//which means I can't just store a bunch of uint16_ts, I need to actually put my own struct in a set
+//Seems similar to something from last year. Day 16: The Floor Will Be Lava
 long Day06::solve2()
 {
-    return 0;
+    long count = 0;
+    uint16_t pos;
+
+    for(uint8_t r = 0; r < numRows; r++)
+    {
+        M5Cardputer.Display.clear();
+        M5Cardputer.Display.setCursor(0, 48);
+        M5Cardputer.Display.printf("%d", r);
+        for(uint8_t c = 0; c < numCols; c++)
+        {
+            pos = makeCoord(r, c);
+            if(pos != guardStart && !obstacles.count(pos))
+            {
+                obstacles.insert(pos);
+                if(loops())
+                    count++;
+                obstacles.erase(pos);
+            }
+        }
+    }
+
+    M5Cardputer.Display.setCursor(0, 32);
+    return count;
 }
 
 //Simple way of storing two uint8_t as one uint16_t
@@ -73,4 +97,30 @@ uint8_t Day06::row(uint16_t coord)
 uint8_t Day06::col(uint16_t coord)
 {
     return coord % 256;
+}
+
+bool Day06::loops()
+{
+
+    std::unordered_set<state, state> visited;
+    uint8_t direction = 0;
+    uint16_t guardPos = guardStart;
+    uint16_t newPos;
+
+    visited.insert({guardPos, direction});
+    while(row(guardPos) < numRows && col(guardPos) < numCols)
+    {
+        newPos = makeCoord(row(guardPos) + directions[direction][0], col(guardPos) + directions[direction][1]);
+        while(obstacles.count(newPos))
+        {
+            direction = (direction + 1) % 4;
+            newPos = makeCoord(row(guardPos) + directions[direction][0], col(guardPos) + directions[direction][1]);
+        }
+        if(visited.count({newPos, direction}))
+            return true;
+
+        visited.insert({newPos, direction});
+        guardPos = newPos;
+    }
+    return false;
 }
