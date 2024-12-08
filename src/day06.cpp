@@ -78,22 +78,6 @@ uint64_t Day06::solve2()
     return count;
 }
 
-//Simple way of storing two uint8_t as one uint16_t
-uint16_t Day06::makeCoord(uint8_t row, uint8_t col)
-{
-    return row * 256 + col;
-}
-
-uint8_t Day06::row(uint16_t coord)
-{
-    return coord / 256;
-}
-
-uint8_t Day06::col(uint16_t coord)
-{
-    return coord % 256;
-}
-
 bool Day06::loops()
 {
 
