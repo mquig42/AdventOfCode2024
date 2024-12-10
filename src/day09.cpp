@@ -77,8 +77,43 @@ uint64_t Day09::solve1()
 
 //Might actually be able to simulate part 2. Store a list of tuples representing file ID and size in blocks (-1 for empty)
 //So instead of 2 bytes per block, it's 3 bytes per file. Can't use a linked list, the pointers would take up too much space,
-//but a vector should do
+//but a vector should do. Nope, still too big.
+//Have to use a similar approach to part 1
 uint64_t Day09::solve2()
 {
-    return 0;
+    std::vector<uint8_t> reallocated(input);
+    uint64_t checksum = 0;
+    uint32_t addr = 0;
+    int end = input.size() - 1;
+    uint16_t endID = numFiles - 1;
+    bool isFile = true;
+
+    //For each file, iterating backwards from the end
+    for(int end = input.size() - 1; end >= 0; end -= 2)
+    {
+        //Find an empty address with enough space to move the file to
+        addr = 0;
+        isFile = true;
+        for(int i = 0; i < end; i++)
+        {
+            if((!isFile) && (reallocated[i] >= input[end]))
+            {
+                //Update the reallocated table.
+                //Make the empty space entry smaller and the preceding file entry bigger to reflect the new file being moved
+                reallocated[i] -= input[end];
+                reallocated[i - 1] += input[end];
+                break;
+            }
+            isFile = !isFile;
+            addr += reallocated[i];
+        }
+
+        //Add file to checksum
+        for(int i = 0; i < input[end]; i++)
+            checksum += (addr + i) * endID;
+        
+        endID--;
+    }
+
+    return checksum;
 }
