@@ -8,8 +8,9 @@ class Day09 : public Day
         Day09();
         void load(File file);
     private:
-        std::vector<int16_t> disk;
-        
+        uint16_t numFiles = 0;
+        std::vector<uint8_t> input;
+
         uint64_t solve1();
         uint64_t solve2();
 };

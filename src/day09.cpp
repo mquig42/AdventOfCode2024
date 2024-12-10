@@ -12,35 +12,72 @@ Day09::Day09()
 //Might be tight though. UPDATE: tried it, didn't fit. Can I use the MicroSD card? Might be slow. Or is there a clever way?
 void Day09::load(File file)
 {
-    int16_t fileID = 0;
+    String inputStr = file.readStringUntil('\r');
     bool isFile = true;
-    int8_t c = file.read() - '0';
-
-    while(c >= 0 && c <= 9)
+    for(char c : inputStr)
     {
-        for(int i = 0; i < c; i++)
-        {
-            if(isFile)
-                disk.push_back(fileID);
-            else
-                disk.push_back(-1);
-        }
-
         if(isFile)
-            fileID++;
-        
+            numFiles++;
         isFile = !isFile;
-        c = file.read() - '0';
+        input.push_back(c - '0');
     }
 
     file.close();
 }
 
+//Since there isn't enough RAM to simulate the fragging process, calculate a checksum directly from the input
+//Two indices, one starts at the beginning, the other at the end. Also use beginID and endID to keep track of file IDs
+//For files, simply multiply beginID by addr for every block of the file
+//For empty space, use end and endID to find files from the end and add them to the checksum.
 uint64_t Day09::solve1()
 {
-    return 0;
+    uint64_t checksum = 0;              //File system checksum
+    uint32_t addr = 0;                  //Memory address
+    int begin = 0;                      //Index that starts at beginning of input and increases
+    uint16_t beginID = 0;               //file ID of input[begin]
+    int end = input.size() - 1;         //Index that starts at end of input and decreases
+    uint16_t endID = numFiles - 1;      //file ID of input[end]
+    bool isFile = true;                 //Does input[begin] represent a file or empty space?
+    uint8_t fileCounter = input[end];   //Number of blocks at end that haven't yet been moved
+
+    while(begin < end)
+    {
+        if(isFile)
+        {
+            for(int i = 0; i < input[begin]; i++)
+            {
+                checksum += addr * beginID;
+                addr++;
+            }
+            isFile = false;
+            begin++;
+            beginID++;
+        }
+        else
+        {
+            for(int i = 0; i < input[begin]; i++)
+            {
+                if(fileCounter <= 0)
+                {
+                    end -= 2; //dec by 2 to skip empty space and go to the next file
+                    fileCounter = input[end];
+                    endID--;
+                }
+                checksum += addr * endID;
+                fileCounter--;
+                addr++;
+            }
+            isFile = true;
+            begin++;
+        }
+    }
+
+    return checksum + addr * beginID; //One block wasn't counted. Add it now.
 }
 
+//Might actually be able to simulate part 2. Store a list of tuples representing file ID and size in blocks (-1 for empty)
+//So instead of 2 bytes per block, it's 3 bytes per file. Can't use a linked list, the pointers would take up too much space,
+//but a vector should do
 uint64_t Day09::solve2()
 {
     return 0;
