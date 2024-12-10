@@ -32,7 +32,7 @@ void Day09::load(File file)
 uint64_t Day09::solve1()
 {
     uint64_t checksum = 0;              //File system checksum
-    uint32_t addr = 0;                  //Memory address
+    uint32_t addr = 0;                  //File system address
     int begin = 0;                      //Index that starts at beginning of input and increases
     uint16_t beginID = 0;               //file ID of input[begin]
     int end = input.size() - 1;         //Index that starts at end of input and decreases
@@ -81,12 +81,11 @@ uint64_t Day09::solve1()
 //Have to use a similar approach to part 1
 uint64_t Day09::solve2()
 {
-    std::vector<uint8_t> reallocated(input);
-    uint64_t checksum = 0;
-    uint32_t addr = 0;
-    int end = input.size() - 1;
-    uint16_t endID = numFiles - 1;
-    bool isFile = true;
+    std::vector<uint8_t> reallocated(input);    //Copy of input, which will be modified to reflect moved files
+    uint64_t checksum = 0;                      //File system checksum
+    uint32_t addr = 0;                          //File system address
+    uint16_t endID = numFiles - 1;              //File ID of input[end]
+    bool isFile = true;                         //Does input[i] represent a file or empty space
 
     //For each file, iterating backwards from the end
     for(int end = input.size() - 1; end >= 0; end -= 2)
