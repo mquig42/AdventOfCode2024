@@ -60,17 +60,17 @@ uint64_t Day10::solve2()
 uint16_t Day10::score(uint8_t row, uint8_t col)
 {
     uint16_t s = 0;
-    uint8_t h = heightmap[row][col] - '0';
-    if(h == 9)
+    char h = heightmap[row][col];
+    if(h == '9')
         return 1;
     
-    if(row > 0 && heightmap[row - 1][col] - '0' == h + 1)
+    if(row > 0 && heightmap[row - 1][col] == h + 1)
         s += score(row - 1, col);
-    if(col + 1 < numCols && heightmap[row][col + 1] - '0' == h + 1)
+    if(col + 1 < numCols && heightmap[row][col + 1] == h + 1)
         s += score(row, col + 1);
-    if(row + 1 < numRows && heightmap[row + 1][col] - '0' == h + 1)
+    if(row + 1 < numRows && heightmap[row + 1][col] == h + 1)
         s += score(row + 1, col);
-    if(col > 0 && heightmap[row][col - 1] - '0' == h + 1)
+    if(col > 0 && heightmap[row][col - 1] == h + 1)
         s += score(row, col - 1);
     
     return s;
@@ -79,30 +79,30 @@ uint16_t Day10::score(uint8_t row, uint8_t col)
 std::set<uint16_t> Day10::nines(uint8_t row, uint8_t col)
 {
     std::set<uint16_t> r;
-    uint8_t h = heightmap[row][col] - '0';
-    if(h == 9)
+    char h = heightmap[row][col];
+    if(h == '9')
     {
         r.insert(makeCoord(row, col));
         return r;
     }
     
     std::set<uint16_t> other;
-    if(row > 0 && heightmap[row - 1][col] - '0' == h + 1)
+    if(row > 0 && heightmap[row - 1][col] == h + 1)
     {
         other = nines(row - 1, col);
         r.insert(other.begin(), other.end());
     }
-    if(col + 1 < numCols && heightmap[row][col + 1] - '0' == h + 1)
+    if(col + 1 < numCols && heightmap[row][col + 1] == h + 1)
     {
         other = nines(row, col + 1);
         r.insert(other.begin(), other.end());
     }
-    if(row + 1 < numRows && heightmap[row + 1][col] - '0' == h + 1)
+    if(row + 1 < numRows && heightmap[row + 1][col] == h + 1)
     {
         other = nines(row + 1, col);
         r.insert(other.begin(), other.end());
     }
-    if(col > 0 && heightmap[row][col - 1] - '0' == h + 1)
+    if(col > 0 && heightmap[row][col - 1] == h + 1)
     {
         other = nines(row, col - 1);
         r.insert(other.begin(), other.end());
