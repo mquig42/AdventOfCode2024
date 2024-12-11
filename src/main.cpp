@@ -35,7 +35,7 @@ void setup()
 
 	Day &day = selectDay(25); 
 
-	day.load(SD.open("/AoC_Data/11_Test.txt"));
+	day.load(SD.open("/AoC_Data/11.txt"));
 	day.solveBoth(&M5Cardputer.Display);
 }
 
@@ -78,7 +78,7 @@ Day &selectDay(int n)
 		case 10:
 			static Day10 d10;
 			return d10;
-		case 11:
+		default:
 			static Day11 d11;
 			return d11;
 	}
