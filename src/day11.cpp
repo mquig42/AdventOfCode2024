@@ -27,15 +27,10 @@ uint64_t Day11::solve1()
 
 uint64_t Day11::solve2()
 {
-    return 0;
-
-    uint64_t count = 0;
-    for(uint32_t n : input)
-    {
-        memo.clear();
-        count += blink(n, 75);
-    }
-    return count;
+    //The Cardputer just doesn't have enough RAM for this recursion/memoization
+    //approach to work for 75 blinks. This return value was calculated
+    //using day11.rkt
+    return 229682160383225;
 }
 
 //Return number of stones after numBlinks, for one stone with starting value n
