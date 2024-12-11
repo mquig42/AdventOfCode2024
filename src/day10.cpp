@@ -76,6 +76,7 @@ uint16_t Day10::score(uint8_t row, uint8_t col)
     return s;
 }
 
+//Return a std::set of the coordinates of any '9's reachable from this point
 std::set<uint16_t> Day10::nines(uint8_t row, uint8_t col)
 {
     std::set<uint16_t> r;
