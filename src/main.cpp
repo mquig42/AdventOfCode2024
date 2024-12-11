@@ -14,6 +14,7 @@
 #include "day08.h"
 #include "day09.h"
 #include "day10.h"
+#include "day11.h"
 
 //Pins for SD card
 #define SD_SPI_SCK_PIN  40
@@ -34,7 +35,7 @@ void setup()
 
 	Day &day = selectDay(25); 
 
-	day.load(SD.open("/AoC_Data/10.txt"));
+	day.load(SD.open("/AoC_Data/11_Test.txt"));
 	day.solveBoth(&M5Cardputer.Display);
 }
 
@@ -74,8 +75,11 @@ Day &selectDay(int n)
 		case 9:
 			static Day09 d9;
 			return d9;
-		default:
+		case 10:
 			static Day10 d10;
 			return d10;
+		case 11:
+			static Day11 d11;
+			return d11;
 	}
 }
