@@ -8,6 +8,7 @@ class Day
 {
     public:
         int dayNumber = 0;
+        virtual ~Day() = default;
         virtual void load(File file) = 0;
         virtual void solveBoth(LovyanGFX* display);
     private:
