@@ -15,6 +15,7 @@
 #include "day09.h"
 #include "day10.h"
 #include "day11.h"
+#include "day12.h"
 
 //Pins for SD card
 #define SD_SPI_SCK_PIN  40
@@ -22,7 +23,7 @@
 #define SD_SPI_MOSI_PIN 14
 #define SD_SPI_CS_PIN   12
 
-Day &selectDay(int n);
+Day *selectDay(int n);
 
 void setup()
 {
@@ -33,10 +34,12 @@ void setup()
 	SPI.begin(SD_SPI_SCK_PIN, SD_SPI_MISO_PIN, SD_SPI_MOSI_PIN, SD_SPI_CS_PIN);
 	SD.begin(SD_SPI_CS_PIN, SPI, 25000000);
 
-	Day &day = selectDay(25); 
+	Day *day = selectDay(25); 
 
-	day.load(SD.open("/AoC_Data/11.txt"));
-	day.solveBoth(&M5Cardputer.Display);
+	day->load(SD.open("/AoC_Data/12_Test1.txt"));
+	day->solveBoth(&M5Cardputer.Display);
+
+	delete(day);
 }
 
 void loop()
@@ -44,42 +47,48 @@ void loop()
 
 }
 
-Day &selectDay(int n)
+Day *selectDay(int n)
 {
+	Day *d;
     switch(n)
 	{
 		case 1:
-			static Day01 d1;
-			return d1;
+			d = new Day01();
+			break;
 		case 2:
-			static Day02 d2;
-			return d2;
+			d = new Day02();
+			break;
 		case 3:
-			static Day03 d3;
-			return d3;
+			d = new Day03();
+			break;
 		case 4:
-			static Day04 d4;
-			return d4;
+			d = new Day04();
+			break;
 		case 5:
-			static Day05 d5;
-			return d5;
+			d = new Day05();
+			break;
 		case 6:
-			static Day06 d6;
-			return d6;
+			d = new Day06();
+			break;
 		case 7:
-			static Day07 d7;
-			return d7;
+			d = new Day07();
+			break;
 		case 8:
-			static Day08 d8;
-			return d8;
+			d = new Day08();
+			break;
 		case 9:
-			static Day09 d9;
-			return d9;
+			d = new Day09();
+			break;
 		case 10:
-			static Day10 d10;
-			return d10;
+			d = new Day10();
+			break;
+		case 11:
+			d = new Day11();
+			break;
 		default:
-			static Day11 d11;
-			return d11;
+			d = new Day12();
+			break;
 	}
+
+	return d;
 }
