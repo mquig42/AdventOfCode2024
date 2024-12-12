@@ -7,66 +7,85 @@ Day11::Day11()
 
 void Day11::load(File file)
 {
-    while(file.available())
+    long n = 0;
+    String line = file.readStringUntil('\n');
+    for(char c : line)
     {
-        input.push_back(file.parseInt());
+        if(c >= '0' && c <= '9')
+        {
+            n = n * 10 + c - '0';
+        }
+        else
+        {
+            increaseCount(counts, n, 1);
+            n = 0;
+        }
     }
-    input.pop_back();
     file.close();
 }
 
 uint64_t Day11::solve1()
 {
-    uint64_t count = 0;
-    for(uint32_t n : input)
-    {
-        count += blink(n, 25);
-    }
-    return count;
+    uint64_t sum = 0;
+
+    for(int i = 0; i < 25; i++)
+        blink();
+
+    for(auto i : counts)
+        sum += i.second;
+    
+    return sum;
 }
 
+//This gets up as far as 54 blinks, and counts grows slowly
+//Further optimization might get it to 75
 uint64_t Day11::solve2()
 {
-    //The Cardputer just doesn't have enough RAM for this recursion/memoization
-    //approach to work for 75 blinks. This return value was calculated
-    //using day11.rkt
-    return 229682160383225;
+    uint64_t sum = 0;
+
+    for(int i = 0; i < 50; i++)
+        blink();
+
+    for(auto i : counts)
+        sum += i.second;
+    
+    return sum;
 }
 
-//Return number of stones after numBlinks, for one stone with starting value n
-//Part 1 without memoization is solved in 6 seconds. With memoization is instant
-//On part 2 it runs out of memory
-uint64_t Day11::blink(uint64_t n, uint8_t numBlinks)
+//Updates counts by one blink
+//I'm storing a count of each distinct value. This is what I should have done from the beginning,
+//since the first thing I thought after reading the description was "lanternfish"
+void Day11::blink()
 {
-    if(memo.count(n * 100 + numBlinks))
-        return memo[n * 100 + numBlinks];
-    
-    int digits;
-    int pow10;
-    uint64_t nOrig = n;
-    uint8_t numBlinksOrig = numBlinks;
-    while(numBlinks > 0)
+    std::unordered_map<uint64_t, uint32_t> newCounts;
+    int digits, pow10;;
+    for(auto i : counts)
     {
-        digits = std::log10(n) + 1;
-        if(n == 0)
+        digits = std::log10(i.first) + 1;
+        if(i.first == 0)
         {
-            n = 1;
-            numBlinks--;
+            increaseCount(newCounts, 1, i.second);
         }
         else if(digits % 2 == 0)
         {
             pow10 = std::pow(10, digits / 2);
-            uint64_t splitReturn = blink(n / pow10, numBlinks - 1) + blink(n % pow10, numBlinks - 1);
-            memo[nOrig * 100 + numBlinksOrig] = splitReturn;
-            return splitReturn;
+            increaseCount(newCounts, i.first / pow10, i.second);
+            increaseCount(newCounts, i.first % pow10, i.second);
         }
         else
         {
-            n *= 2024;
-            numBlinks--;
+            increaseCount(newCounts, i.first * 2024, i.second);
         }
     }
 
-    memo[nOrig * 100 + numBlinksOrig] = 1;
-    return 1;
+    counts.clear();
+    counts = newCounts;
+}
+
+void Day11::increaseCount(std::unordered_map<uint64_t, uint32_t> &c, uint64_t key, uint32_t value)
+{
+    if(c.count(key))
+        c[key] += value;
+    else
+        c[key] = value;
 }

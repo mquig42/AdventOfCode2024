@@ -10,12 +10,12 @@ class Day11 : public Day
         Day11();
         void load(File file);
     private:
-        std::vector<uint32_t> input;
-        std::unordered_map<uint64_t, uint32_t> memo;
+        std::unordered_map<uint64_t, uint32_t> counts;
 
         uint64_t solve1();
         uint64_t solve2();
-        uint64_t blink(uint64_t n, uint8_t numBlinks);
+        void blink();
+        void increaseCount(std::unordered_map<uint64_t, uint32_t> &c, uint64_t key, uint32_t value);
 };
 
 #endif //DAY11_H

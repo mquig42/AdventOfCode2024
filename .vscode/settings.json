@@ -55,6 +55,7 @@
         "typeinfo": "cpp",
         "bitset": "cpp",
         "regex": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "forward_list": "cpp"
     }
 }
