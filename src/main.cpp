@@ -89,7 +89,7 @@ Day *selectDay(int n)
 		case 12:
 			d = new Day12();
 			break;
-		case 13:
+		default:
 			d = new Day13();
 			break;
 	}
