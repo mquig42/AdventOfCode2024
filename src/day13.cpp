@@ -38,7 +38,14 @@ uint64_t Day13::solve1()
 
 uint64_t Day13::solve2()
 {
-    return 0;
+    uint64_t sum = 0;
+
+    for(clawMachine machine : input)
+    {
+        sum += solveMachine2(machine);
+    }
+
+    return sum;
 }
 
 //Return smallest number of tokens required to solve the machine, or 0 if it's impossible
@@ -63,4 +70,24 @@ uint16_t Day13::solveMachine(clawMachine machine)
         return 0;
 
     return cost;
+}
+
+//Return smallest number of tokens required to solve the machine, or 0 if it's impossible
+//New solution based on linear algebra
+uint64_t Day13::solveMachine2(clawMachine machine)
+{
+    //Do all calculations in 64 bit
+    int64_t ax = machine.ax;
+    int64_t ay = machine.ay;
+    int64_t bx = machine.bx;
+    int64_t by = machine.by;
+    int64_t gx = machine.goalx + 10000000000000;
+    int64_t gy = machine.goaly + 10000000000000;
+
+    //Use modulus to see if solution is an integer
+    if((ay * gx - ax * gy) % (ay * bx - ax * by) != 0 || (by * gx - bx * gy) % (ax * by - ay * bx) != 0)
+        return 0;
+    
+    //Calculate solution
+    return (ay * gx - ax * gy) / (ay * bx - ax * by) + 3 * ((by * gx - bx * gy) / (ax * by - ay * bx));
 }

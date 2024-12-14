@@ -22,6 +22,7 @@ class Day13 : public Day
         uint64_t solve1();
         uint64_t solve2();
         uint16_t solveMachine(clawMachine machine);
+        uint64_t solveMachine2(clawMachine machine);
 };
 
 #endif //DAY13_H
