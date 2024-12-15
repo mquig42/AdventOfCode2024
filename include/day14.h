@@ -21,6 +21,7 @@ class Day14 : public Day
         uint64_t solve1();
         uint64_t solve2();
         uint8_t quadrant(robot r, uint16_t seconds);
+        void updatePosition(robot &r);
 };
 
 #endif //DAY14_H

@@ -54,7 +54,37 @@ uint64_t Day14::solve1()
 
 uint64_t Day14::solve2()
 {
-    return 0;
+    M5Cardputer.Display.printf("Part 2: ");
+    int32_t cursorX = M5Cardputer.Display.getCursorX();
+    int32_t cursorY = M5Cardputer.Display.getCursorY();
+    
+    uint32_t t = 0;
+    while(t < 7051) //Calculated manually
+    {
+        //Clear the portions of the screen that will be updated
+        M5Cardputer.Display.setColor(BLACK);
+        M5Cardputer.Display.setTextColor(BLACK);
+        M5Cardputer.Display.setCursor(cursorX, cursorY);
+        M5Cardputer.Display.printf("%d", t);
+        M5Cardputer.Display.fillRect(138, 31, 102, 104);
+
+        //Print number
+        M5Cardputer.Display.setColor(GREEN);
+        M5Cardputer.Display.setTextColor(GREEN);
+        t++;
+        M5Cardputer.Display.setCursor(cursorX, cursorY);
+        M5Cardputer.Display.printf("%d", t);
+
+        //Display robot positions
+        for(int i = 0; i < input.size(); i++)
+        {
+            updatePosition(input[i]);
+        }
+    }
+
+    //Reset cursor position
+    M5Cardputer.Display.setCursor(0, cursorY);
+    return t;
 }
 
 //returns the quadrant (0-3) the robot will be in after seconds
@@ -82,4 +112,20 @@ uint8_t Day14::quadrant(robot r, uint16_t seconds)
         return 3;
     else
         return 4;
+}
+
+//Advance the robot's position by one second and draw it on the screen
+void Day14::updatePosition(robot &r)
+{
+    int16_t x = (r.px + r.vx) % x_size;
+    int16_t y = (r.py + r.vy) % y_size;
+    if(x < 0)
+        x += x_size;
+    if(y < 0)
+        y += y_size;
+    
+    r.px = x;
+    r.py = y;
+
+    M5Cardputer.Display.drawPixel(x + 138, y + 31);
 }
