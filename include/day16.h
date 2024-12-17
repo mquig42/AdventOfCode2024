@@ -33,6 +33,7 @@ class Day16 : public Day
             uint16_t position;
             uint8_t direction;
             uint32_t score;
+            std::unordered_set<uint16_t> path;
             bool operator<(const queueNode &b) const
             {
                 return score > b.score; //Easiest way to make queue give minimum value instead of maximum
@@ -45,13 +46,13 @@ class Day16 : public Day
         uint8_t left = 3;
 
         std::unordered_set<uint16_t> spaces;
+        std::unordered_set<uint16_t> allPaths;
+        uint64_t bestScore = UINT64_MAX;
         uint16_t start, end;
-
-        std::unordered_map<state, uint32_t, state> visited;
-        std::priority_queue<queueNode> unvisited;
 
         uint64_t solve1();
         uint64_t solve2();
+        void runDijkstra();
 };
 
 #endif //DAY16_H
