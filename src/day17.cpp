@@ -64,7 +64,7 @@ void Day17::run()
         switch(instr)
         {
             case 0: //ADV
-                REG_A = REG_A / (1 << getCombo(operand));
+                REG_A = REG_A >> getCombo(operand);
                 ip += 2;
                 break;
             case 1: //BXL
@@ -90,11 +90,11 @@ void Day17::run()
                 ip += 2;
                 break;
             case 6: //BDV
-                REG_B = REG_A / (1 << getCombo(operand));
+                REG_B = REG_A >> getCombo(operand);
                 ip += 2;
                 break;
             case 7: //CDV
-                REG_C = REG_A / (1 << getCombo(operand));
+                REG_C = REG_A >> getCombo(operand);
                 ip += 2;
                 break;
         }
