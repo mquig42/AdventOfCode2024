@@ -18,6 +18,7 @@ class Day17 : public Day
         std::vector<uint8_t> run();
         int64_t getCombo(uint8_t operand);
         bool cmpVectors(std::vector<uint8_t> a, std::vector<uint8_t> b);
+        uint64_t recursive2(uint64_t testValue);
 };
 
 #endif //DAY17_H
