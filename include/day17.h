@@ -15,8 +15,9 @@ class Day17 : public Day
 
         uint64_t solve1();
         uint64_t solve2();
-        void run();
+        std::vector<uint8_t> run();
         int64_t getCombo(uint8_t operand);
+        bool cmpVectors(std::vector<uint8_t> a, std::vector<uint8_t> b);
 };
 
 #endif //DAY17_H

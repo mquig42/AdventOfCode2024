@@ -34,6 +34,7 @@ void Day17::solveBoth(LovyanGFX *display)
         display->printf("%d,", i);*/
 
     solve1();
+    display->printf("Part 2: %llu\n", solve2());
 }
 
 uint64_t Day17::solve1()
@@ -41,20 +42,51 @@ uint64_t Day17::solve1()
     ip = 0;
 
     M5Cardputer.Display.printf("Part 1: ");
-    run();
+    std::vector<uint8_t> output = run();
 
+    M5Cardputer.Display.printf("%d", output[0]);
+    for(int i = 1; i < output.size(); i++)
+    {
+        M5Cardputer.Display.printf(",%d", output[i]);
+    }
+    M5Cardputer.Display.printf("\n");
     return 0;
 }
 
 uint64_t Day17::solve2()
 {
-    return 0;
+    uint64_t testVal = 0;
+    uint64_t counter = 0;
+    std::vector<uint8_t> output;
+
+    do
+    {
+        counter++;
+        REG_A = testVal;
+        ip = 0;
+        output = run();
+        if(cmpVectors(output, instructions))
+        {
+            M5Cardputer.Display.printf("%d ", output.size());
+            if(output.size() == instructions.size())
+                break;
+            testVal *= 8;
+        }
+        else
+        {
+            testVal++;
+        }
+    } while (true);
+    M5Cardputer.Display.printf("\n%llu attempts\n", counter);
+    
+    return testVal;
 }
 
-void Day17::run()
+std::vector<uint8_t> Day17::run()
 {
     uint8_t instr;
     uint8_t operand;
+    std::vector<uint8_t> output;
 
     while(ip < instructions.size())
     {
@@ -86,7 +118,7 @@ void Day17::run()
                 ip += 2;
                 break;
             case 5: //OUT
-                M5Cardputer.Display.printf("%d,", getCombo(operand) & 0b0111);
+                output.push_back(getCombo(operand) & 0b0111);
                 ip += 2;
                 break;
             case 6: //BDV
@@ -100,7 +132,7 @@ void Day17::run()
         }
     }
 
-    M5Cardputer.Display.printf("HALT\n");
+    return output;
 }
 
 //Returns the value of a combo operand
@@ -116,4 +148,18 @@ int64_t Day17::getCombo(uint8_t operand)
         M5Cardputer.Display.printf("ERROR 7");
 
     return operand;
+}
+
+//Takes two vectors. a.size <= b.size
+//Returns true if all n elements in a match the last n elements of b
+bool Day17::cmpVectors(std::vector<uint8_t> a, std::vector<uint8_t> b)
+{
+    int offset = b.size() - a.size();
+    for(int i = 0; i < a.size(); i++)
+    {
+        if(a[i] != b[i + offset])
+            return false;
+    }
+
+    return true;
 }
