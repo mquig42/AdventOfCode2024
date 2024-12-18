@@ -21,6 +21,7 @@
 #include "day15.h"
 #include "day16.h"
 #include "day17.h"
+#include "day18.h"
 
 //Pins for SD card
 #define SD_SPI_SCK_PIN  40
@@ -41,7 +42,7 @@ void setup()
 
 	Day *day = selectDay(25); 
 
-	day->load(SD.open("/AoC_Data/17.txt"));
+	day->load(SD.open("/AoC_Data/18_Test.txt"));
 	day->solveBoth(&M5Cardputer.Display);
 
 	delete(day);
@@ -105,8 +106,11 @@ Day *selectDay(int n)
 		case 16:
 			d = new Day16();
 			break;
-		default:
+		case 17:
 			d = new Day17();
+			break;
+		default:
+			d = new Day18();
 			break;
 	}
 
