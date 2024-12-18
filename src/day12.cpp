@@ -16,6 +16,7 @@ void Day12::load(File file)
     file.close();
 
     char c;
+    std::unordered_set<uint16_t> plot;
     for(uint8_t row = 0; row < numRows; row++)
     {
         for(uint8_t col = 0; col < numCols; col++)
@@ -23,7 +24,10 @@ void Day12::load(File file)
             c = getCrop(row, col);
             if(c)
             {
-                answer1 += cost1(collectPlot(row, col));
+                plot = collectPlot(row, col);
+                answer1 += cost1(plot);
+                answer2 += cost2(plot);
+                plot.clear();
             }
         }
     }
@@ -36,10 +40,11 @@ uint64_t Day12::solve1()
 
 uint64_t Day12::solve2()
 {
-    return 0;
+    return answer2;
 }
 
 //Determine the cost of a plot, given by area * perimeter
+//The perimeter of any point in the plot is 4 minus the number of neighbours
 uint64_t Day12::cost1(std::unordered_set<uint16_t> plot)
 {
     uint64_t cost = 0;
@@ -49,6 +54,19 @@ uint64_t Day12::cost1(std::unordered_set<uint16_t> plot)
         cost += 4 - countNeighbours(p, plot);
     }
 
+    return cost * plot.size();
+}
+
+//Need to find the number of sides (which is equal to the number of corners)
+uint64_t Day12::cost2(std::unordered_set<uint16_t> plot)
+{
+    uint64_t cost = 0;
+
+    for(uint16_t p : plot)
+    {
+        cost += countCorners(p, plot);
+    }
+    //M5Cardputer.Display.printf("%llu * %llu = %llu, ", cost, plot.size(), cost * plot.size());
     return cost * plot.size();
 }
 
@@ -120,5 +138,52 @@ uint8_t Day12::countNeighbours(uint16_t point, std::unordered_set<uint16_t> plot
         count++;
     if(plot.count(makeNeighbour(point, 'L')))
         count++;
+    return count;
+}
+
+//Count the corners of each point in the plot
+//There are 8 possible corners, 4 concave and 4 convex
+uint8_t Day12::countCorners(uint16_t point, std::unordered_set<uint16_t> plot)
+{
+    //012
+    //3.4
+    //567
+    bool n[8];
+    n[0] = plot.count(makeNeighbour(point, 'U') - 1);
+    n[1] = plot.count(makeNeighbour(point, 'U'));
+    n[2] = plot.count(makeNeighbour(point, 'U') + 1);
+    n[3] = plot.count(makeNeighbour(point, 'L'));
+    n[4] = plot.count(makeNeighbour(point, 'R'));
+    n[5] = plot.count(makeNeighbour(point, 'D') - 1);
+    n[6] = plot.count(makeNeighbour(point, 'D'));
+    n[7] = plot.count(makeNeighbour(point, 'D') + 1);
+
+    uint8_t count = 0;
+
+    //Convex top left
+    if(!n[1] && !n[3])
+        count++;
+    //convex top right
+    if(!n[1] && !n[4])
+        count++;
+    //convex bottom right
+    if(!n[4] && !n[6])
+        count++;
+    //convex bottom left
+    if(!n[3] && !n[6])
+        count++;
+    //concave top left
+    if(!n[0] && n[1] && n[3])
+        count++;
+    //concave top right
+    if(!n[2] && n[1] && n[4])
+        count++;
+    //concave bottom right
+    if(!n[5] && n[3] && n[6])
+        count++;
+    //concave bottom left
+    if(!n[7] && n[4] && n[6])
+        count++;
+
     return count;
 }
