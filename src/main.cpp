@@ -42,7 +42,7 @@ void setup()
 
 	Day *day = selectDay(25); 
 
-	day->load(SD.open("/AoC_Data/18_Test.txt"));
+	day->load(SD.open("/AoC_Data/18.txt"));
 	day->solveBoth(&M5Cardputer.Display);
 
 	delete(day);

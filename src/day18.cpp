@@ -7,9 +7,12 @@ Day18::Day18()
 
 void Day18::load(File file)
 {
+    uint8_t c;
     while(file.available())
     {
-        bytes.push_back(makeCoord(file.parseInt(), file.parseInt()));
+        //Data is given in col,row format. Swap the order
+        c = file.parseInt();
+        bytes.push_back(makeCoord(file.parseInt(), c));
     }
     bytes.pop_back();
 
@@ -23,19 +26,49 @@ void Day18::load(File file)
     file.close();
 }
 
-//Drop some bytes, then do a bread first search
+//Overriding again because part 2 output isn't an integer
+void Day18::solveBoth(LovyanGFX* display)
+{
+    display->setTextColor(GREEN);
+    display->setTextFont(2);
+
+    display->printf("Advent of Code 2024 Day %d\n", dayNumber);
+    display->printf("Part 1: %llu\n", solve1());
+    uint16_t lastByte = solve2();
+    display->printf("Part 2: %d,%d\n", col(lastByte), row(lastByte));
+}
+
+//Drop some bytes, then call pathfinding function
 uint64_t Day18::solve1()
 {
-    std::unordered_set<uint16_t> corrupted;
-    std::unordered_set<uint16_t> visited;
-    std::queue<queueNode> q;
-    queueNode current;
-    uint16_t next;
-
     for(int i = 0; i < toDrop; i++)
     {
         corrupted.insert(bytes[i]);
     }
+
+    return findPath();
+}
+
+//Just insert one byte at a time and try pathfinding again
+uint64_t Day18::solve2()
+{
+    for(int i = toDrop; i < bytes.size(); i++)
+    {
+        corrupted.insert(bytes[i]);
+        if(!findPath())
+            return bytes[i];
+    }
+    return 0;
+}
+
+//Use a bread first search to find shortest path to exit
+//Return 0 if no path could be found
+uint32_t Day18::findPath()
+{
+    std::unordered_set<uint16_t> visited;
+    std::queue<queueNode> q;
+    queueNode current;
+    uint16_t next;
 
     visited.insert(0);
     q.push({0, 0});
@@ -72,10 +105,5 @@ uint64_t Day18::solve1()
             q.push({next, current.steps + 1});
         }
     }
-    return 0;
-}
-
-uint64_t Day18::solve2()
-{
     return 0;
 }
