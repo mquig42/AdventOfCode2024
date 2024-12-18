@@ -49,16 +49,28 @@ uint64_t Day18::solve1()
     return findPath();
 }
 
-//Just insert one byte at a time and try pathfinding again
+//Use a binary search to solve faster
 uint64_t Day18::solve2()
 {
-    for(int i = toDrop; i < bytes.size(); i++)
+    uint16_t lo = toDrop;
+    uint16_t hi = bytes.size() - 1;
+    uint16_t n;
+
+    while(hi - lo > 1)
     {
-        corrupted.insert(bytes[i]);
-        if(!findPath())
-            return bytes[i];
+        n = (lo + hi) / 2;
+        corrupted.clear();
+        for(int i = 0; i <= n; i++)
+        {
+            corrupted.insert(bytes[i]);
+        }
+        
+        if(findPath())
+            lo = n;
+        else
+            hi = n;
     }
-    return 0;
+    return bytes[hi];
 }
 
 //Use a bread first search to find shortest path to exit
