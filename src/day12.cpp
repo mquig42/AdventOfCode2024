@@ -7,12 +7,6 @@ Day12::Day12()
 
 void Day12::load(File file)
 {
-    //NOTE: Can I do random file access? Might be able to build the plots structure directly,
-    //without using memory for grid.
-    //I figure if I can separate out each plot, I should be able to figure out the rest.
-    //Store each plot as a set of points. There was a puzzle last year to get the area of a shape
-    //from the points on its edge, and I might be able to use that here.
-    //That way I don't need to store the interior.
     while(file.available())
     {
         grid.push_back(file.readStringUntil('\n'));
@@ -29,7 +23,7 @@ void Day12::load(File file)
             c = getCrop(row, col);
             if(c)
             {
-                plots.push_back(collectPlot(row, col));
+                answer1 += cost1(collectPlot(row, col));
             }
         }
     }
@@ -37,13 +31,7 @@ void Day12::load(File file)
 
 uint64_t Day12::solve1()
 {
-    uint64_t sum = 0;
-    for(std::unordered_set<uint16_t> plot : plots)
-    {
-        sum += cost1(plot);
-    }
-
-    return sum;
+    return answer1;
 }
 
 uint64_t Day12::solve2()
@@ -90,21 +78,32 @@ std::unordered_set<uint16_t> Day12::collectPlot(uint8_t r, uint8_t c)
     {
         point = q.front();
         q.pop();
-        grid[row(point)][col(point)] = '\0';
         plot.insert(point);
 
         neighbour = makeNeighbour(point, 'U');
         if(getCrop(neighbour) == crop)
+        {
+            grid[row(neighbour)][col(neighbour)] = '\0';
             q.push(neighbour);
+        }
         neighbour = makeNeighbour(point, 'R');
         if(getCrop(neighbour) == crop)
+        {
+            grid[row(neighbour)][col(neighbour)] = '\0';
             q.push(neighbour);
+        }
         neighbour = makeNeighbour(point, 'D');
         if(getCrop(neighbour) == crop)
+        {
+            grid[row(neighbour)][col(neighbour)] = '\0';
             q.push(neighbour);
+        }
         neighbour = makeNeighbour(point, 'L');
         if(getCrop(neighbour) == crop)
+        {
+            grid[row(neighbour)][col(neighbour)] = '\0';
             q.push(neighbour);
+        }
     }
 
     return plot;

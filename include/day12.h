@@ -14,6 +14,7 @@ class Day12 : public Day
         std::vector<String> grid;
         uint8_t numRows, numCols;
         std::vector<std::unordered_set<uint16_t>> plots;
+        uint64_t answer1 = 0;
 
         uint64_t solve1();
         uint64_t solve2();
