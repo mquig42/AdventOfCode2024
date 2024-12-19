@@ -37,10 +37,10 @@ uint64_t Day19::solve1()
 {
     uint32_t sum = 0;
     uint64_t mc;
-    for(String p : patterns)
+    for(uint16_t i = 0; i < patterns.size(); i++)
     {
         memo.clear();
-        mc = matchCount(p, 0);
+        mc = matchCount(patterns[i], 0);
         answer2 += mc;
         if(mc)
         {
@@ -79,11 +79,11 @@ uint64_t Day19::matchCount(String &pattern, uint8_t startIdx)
     }
     
     uint64_t sum = 0;
-    for(String t : towels)
+    for(uint16_t i = 0; i < towels.size(); i++)
     {
-        if(subStrCmp(pattern, t, startIdx))
+        if(subStrCmp(pattern, towels[i], startIdx))
         {
-            sum += matchCount(pattern, startIdx + t.length());
+            sum += matchCount(pattern, startIdx + towels[i].length());
         }
     }
 
