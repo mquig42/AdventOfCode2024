@@ -35,10 +35,13 @@ void Day19::load(File file)
 uint64_t Day19::solve1()
 {
     uint32_t sum = 0;
+    uint64_t mc;
     for(String p : patterns)
     {
         memo.clear();
-        if(match1(p, 0))
+        mc = matchCount(p, 0);
+        answer2 += mc;
+        if(mc)
         {
             sum++;
         }
@@ -49,7 +52,7 @@ uint64_t Day19::solve1()
 
 uint64_t Day19::solve2()
 {
-    return 0;
+    return answer2;
 }
 
 bool Day19::subStrCmp(String str, String sub, uint8_t startIdx)
@@ -62,31 +65,25 @@ bool Day19::subStrCmp(String str, String sub, uint8_t startIdx)
     return true;
 }
 
-bool Day19::match1(String pattern, uint8_t startIdx)
+uint64_t Day19::matchCount(String pattern, uint8_t startIdx)
 {
     if(memo.count(startIdx))
         return memo[startIdx];
     
     if(startIdx >= pattern.length())
     {
-        memo[startIdx] = true;
-        return true;
+        return 1;
     }
     
-    bool m;
+    uint64_t sum = 0;
     for(String t : towels)
     {
         if(subStrCmp(pattern, t, startIdx))
         {
-            m = match1(pattern, startIdx + t.length());
-            if(m)
-            {
-                memo[startIdx] = true;
-                return true;
-            }
+            sum += matchCount(pattern, startIdx + t.length());
         }
     }
 
-    memo[startIdx] = false;
-    return false;
+    memo[startIdx] = sum;
+    return sum;
 }
