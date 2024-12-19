@@ -55,7 +55,7 @@ uint64_t Day19::solve2()
     return answer2;
 }
 
-bool Day19::subStrCmp(String str, String sub, uint8_t startIdx)
+bool Day19::subStrCmp(String &str, String &sub, uint8_t startIdx)
 {
     for(uint8_t i = 0; i < sub.length(); i++)
     {
@@ -65,7 +65,7 @@ bool Day19::subStrCmp(String str, String sub, uint8_t startIdx)
     return true;
 }
 
-uint64_t Day19::matchCount(String pattern, uint8_t startIdx)
+uint64_t Day19::matchCount(String &pattern, uint8_t startIdx)
 {
     if(memo.count(startIdx))
         return memo[startIdx];

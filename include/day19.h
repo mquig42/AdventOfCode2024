@@ -16,8 +16,8 @@ class Day19 : public Day
         
         uint64_t solve1();
         uint64_t solve2();
-        bool subStrCmp(String str, String sub, uint8_t startIdx);
-        uint64_t matchCount(String pattern, uint8_t startIdx);
+        bool subStrCmp(String &str, String &sub, uint8_t startIdx);
+        uint64_t matchCount(String &pattern, uint8_t startIdx);
 };
 
 #endif //DAY19_H
