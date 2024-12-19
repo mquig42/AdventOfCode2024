@@ -32,6 +32,7 @@ void Day19::load(File file)
     file.close();
 }
 
+//Solve both parts here, repeating takes too much time
 uint64_t Day19::solve1()
 {
     uint32_t sum = 0;
@@ -55,6 +56,7 @@ uint64_t Day19::solve2()
     return answer2;
 }
 
+//Does str contain the substring sub at startIdx?
 bool Day19::subStrCmp(String &str, String &sub, uint8_t startIdx)
 {
     for(uint8_t i = 0; i < sub.length(); i++)
@@ -65,6 +67,7 @@ bool Day19::subStrCmp(String &str, String &sub, uint8_t startIdx)
     return true;
 }
 
+//Count the number of different ways a pattern could be made with the available towels
 uint64_t Day19::matchCount(String &pattern, uint8_t startIdx)
 {
     if(memo.count(startIdx))
