@@ -91,12 +91,14 @@ uint64_t Day20::solve2()
     //Generate it automatically
     int8_t width;
     std::vector<int16_t> moves;
+    std::unordered_map<int16_t, int8_t> steps;
     for(int8_t v = -20; v <= 20; v++)
     {
         width = 41 - 2 * abs(v);
         for(int8_t h = 0 - width / 2; h <=  width / 2; h++)
         {
             moves.push_back(v * 256 + h);
+            steps[v * 256 + h] = abs(v) + abs(h);
         }
     }
 
@@ -106,7 +108,7 @@ uint64_t Day20::solve2()
     {
         for(int16_t m : moves)
         {
-            if(racetrack.count(rt.first + m) && racetrack[rt.first + m] > rt.second + 121)
+            if(racetrack.count(rt.first + m) && racetrack[rt.first + m] > rt.second + steps[m] + 99)
             {
                 count++;
             }
