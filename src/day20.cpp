@@ -66,6 +66,10 @@ uint64_t Day20::solve1()
     int16_t moves[] = {-512, -257, -255, -2, 2, 255, 257, 512};
     uint64_t count = 0;
 
+    //New feature: keep track of the best shortcut
+    uint16_t bestFrom, bestTo;
+    uint16_t bestLength = 0;
+
     for(auto rt : racetrack)
     {
         for(int16_t m : moves)
@@ -74,8 +78,16 @@ uint64_t Day20::solve1()
             {
                 count++;
             }
+            if(racetrack.count(rt.first + m) && racetrack[rt.first + m] - rt.second - 2 > bestLength)
+            {
+                bestFrom = rt.first;
+                bestTo = rt.first + m;
+                bestLength = racetrack[rt.first + m] - rt.second - 2;
+            }
         }
     }
+
+    M5Cardputer.Display.printf("\nBest: (%u %u)->(%u %u) %u ps\n", row(bestFrom), col(bestFrom), row(bestTo), col(bestTo), bestLength);
 
     return count;
 }
@@ -97,6 +109,10 @@ uint64_t Day20::solve2()
     }
 
     uint64_t count = 0;
+
+    //New feature: keep track of the best shortcut
+    uint16_t bestFrom, bestTo;
+    uint16_t bestLength = 0;
     
     for(auto rt : racetrack)
     {
@@ -106,8 +122,16 @@ uint64_t Day20::solve2()
             {
                 count++;
             }
+            if(racetrack.count(rt.first + m.first) && racetrack[rt.first + m.first] - rt.second - m.second > bestLength)
+            {
+                bestFrom = rt.first;
+                bestTo = rt.first + m.first;
+                bestLength = racetrack[rt.first + m.first] - rt.second - m.second;
+            }
         }
     }
+
+    M5Cardputer.Display.printf("\nBest: (%u %u)->(%u %u) %u ps\n", row(bestFrom), col(bestFrom), row(bestTo), col(bestTo), bestLength);
 
     return count;
 }
