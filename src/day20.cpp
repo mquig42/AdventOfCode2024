@@ -65,7 +65,7 @@ uint64_t Day20::solve1()
     //"move up 2 spaces", for example, is -512
     int16_t moves[] = {-512, -257, -255, -2, 2, 255, 257, 512};
     uint64_t count = 0;
-    
+
     for(auto rt : racetrack)
     {
         for(int16_t m : moves)
@@ -80,7 +80,38 @@ uint64_t Day20::solve1()
     return count;
 }
 
+//First run 1066443, which is too high
+//Second run 986673, which is too low
+//The problem is that cheat paths are now variable-length instead of exactly 2 steps
+//At least we only need to use the shortest path to each possible destination
+//ie. any 2 cheats with the same start and end positions only count once, we don't need to consider every path
 uint64_t Day20::solve2()
 {
-    return 0;
+    //The same algorithm as part 1 can be used here, but the moves list is much larger (840 instead of 8)
+    //Generate it automatically
+    int8_t width;
+    std::vector<int16_t> moves;
+    for(int8_t v = -20; v <= 20; v++)
+    {
+        width = 41 - 2 * abs(v);
+        for(int8_t h = 0 - width / 2; h <=  width / 2; h++)
+        {
+            moves.push_back(v * 256 + h);
+        }
+    }
+
+    uint64_t count = 0;
+    
+    for(auto rt : racetrack)
+    {
+        for(int16_t m : moves)
+        {
+            if(racetrack.count(rt.first + m) && racetrack[rt.first + m] > rt.second + 121)
+            {
+                count++;
+            }
+        }
+    }
+
+    return count;
 }
