@@ -60,26 +60,24 @@ void Day20::load(File file)
 
 uint64_t Day20::solve1()
 {
+    //Cheating for 2 picoseconds results in 8 possible moves
+    //which, due to the way my coordinates work, can be represented as integers
+    //"move up 2 spaces", for example, is -512
     int16_t moves[] = {-512, -257, -255, -2, 2, 255, 257, 512};
+    uint64_t count = 0;
+    
     for(auto rt : racetrack)
     {
         for(int16_t m : moves)
         {
-            if(racetrack.count(rt.first + m) && racetrack[rt.first + m] > rt.second + 2)
+            if(racetrack.count(rt.first + m) && racetrack[rt.first + m] > rt.second + 101)
             {
-                if(!cheatCounts.count(racetrack[rt.first + m] - rt.second - 2))
-                    cheatCounts[racetrack[rt.first + m] - rt.second - 2] = 1;
-                else
-                    cheatCounts[racetrack[rt.first + m] - rt.second - 2]++;
+                count++;
             }
         }
     }
 
-    for(auto cc : cheatCounts)
-    {
-        M5Cardputer.Display.printf("(%u, %u) ", cc.first, cc.second);
-    }
-    return 0;
+    return count;
 }
 
 uint64_t Day20::solve2()
