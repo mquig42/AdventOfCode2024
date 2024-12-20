@@ -60,6 +60,25 @@ void Day20::load(File file)
 
 uint64_t Day20::solve1()
 {
+    int16_t moves[] = {-512, -257, -255, -2, 2, 255, 257, 512};
+    for(auto rt : racetrack)
+    {
+        for(int16_t m : moves)
+        {
+            if(racetrack.count(rt.first + m) && racetrack[rt.first + m] > rt.second + 2)
+            {
+                if(!cheatCounts.count(racetrack[rt.first + m] - rt.second - 2))
+                    cheatCounts[racetrack[rt.first + m] - rt.second - 2] = 1;
+                else
+                    cheatCounts[racetrack[rt.first + m] - rt.second - 2]++;
+            }
+        }
+    }
+
+    for(auto cc : cheatCounts)
+    {
+        M5Cardputer.Display.printf("(%u, %u) ", cc.first, cc.second);
+    }
     return 0;
 }
 
