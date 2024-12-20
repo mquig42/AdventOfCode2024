@@ -10,6 +10,10 @@ class Day20 : public Day
         Day20();
         void load(File file);
     private:
+        //Key is coordinate position, value is distance from start
+        std::unordered_map<uint16_t, uint16_t> racetrack;
+        uint16_t start, end;
+        
         uint64_t solve1();
         uint64_t solve2();
 };
