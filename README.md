@@ -11,3 +11,5 @@ Day 16 both parts
 Day 21 both parts
 
 Day 22 part 2
+
+Day 24
